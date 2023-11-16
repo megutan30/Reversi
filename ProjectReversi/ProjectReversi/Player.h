@@ -4,13 +4,14 @@
 #include "Cell.h"
 #include "Board.h"
 
-class Board;
+//class Board;
 
 class Player {
 public:
     Player(Color color);
     virtual Cell* getNextMove(Board* board) = 0;
     Color getColor();
+
 protected:
     Color color;
 };

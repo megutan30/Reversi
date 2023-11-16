@@ -1,5 +1,6 @@
 #include "Board.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -10,6 +11,7 @@ Board::Board() {
             cells[x][y] = Cell();
         }
     }
+        
     // 中央に初期配置の石を置く
     cells[BOARD_SIZE/ 2 - 1][BOARD_SIZE/2-1].setColor(Color::WHITE);
     cells[BOARD_SIZE / 2 - 1][BOARD_SIZE / 2].setColor(Color::BLACK);
@@ -18,6 +20,8 @@ Board::Board() {
 }
 
 void Board::display() {
+    system("cls");//画面クリア
+
     cout << "  ";
     for (int x = 0; x < BOARD_SIZE; ++x) {
         cout << " " << x % BOARD_SIZE;
@@ -51,43 +55,60 @@ void Board::placePiece(int x, int y, Color color) {
 }
 
 void Board::flipPieces(int x, int y, Color color) {
+    Color opponent = (color == Color::WHITE) ? Color::BLACK : Color::WHITE;
     for (int i = 0; i < DIRNUM; ++i) {
         int nx = x + dx[i], ny = y + dy[i];
-        while (nx >= 0 && nx < DIRNUM && ny >= 0 && ny < DIRNUM && cells[nx][ny].getColor() != color) {
+        bool hasOpponent = false;
+        while (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && cells[nx][ny].getColor() == opponent) {
+            hasOpponent = true;
             nx += dx[i];
             ny += dy[i];
         }
-        if (nx >= 0 && nx < DIRNUM && ny >= 0 && ny < DIRNUM && cells[nx][ny].getColor() == color) {
+        if (hasOpponent && nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && cells[nx][ny].getColor() == color) {
+            nx -= dx[i];
+            ny -= dy[i];
             while (nx != x || ny != y) {
+                cells[nx][ny].setColor(color);
                 nx -= dx[i];
                 ny -= dy[i];
-                cells[nx][ny].setColor(color);
             }
         }
     }
 }
 
 bool Board::isValidMove(int x, int y, Color color) {
-    //ToDo
-    //間に空白がある場所は置けないように
-    //
     if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
         return false;
     }
     if (cells[x][y].getColor() != Color::EMPTY) {
         return false;
     }
+    Color opponent = (color == Color::WHITE) ? Color::BLACK : Color::WHITE;
     for (int i = 0; i < DIRNUM; ++i) {
         int nx = x + dx[i], ny = y + dy[i];
-        while (nx >= 0 && nx < DIRNUM && ny >= 0 && ny < DIRNUM && cells[nx][ny].getColor() != color) {
+        bool hasOpponent = false;
+        while (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && cells[nx][ny].getColor() == opponent) {
+            hasOpponent = true;
             nx += dx[i];
             ny += dy[i];
         }
-        if (nx >= 0 && nx < DIRNUM && ny >= 0 && ny < DIRNUM && cells[nx][ny].getColor() == color) {
+        if (hasOpponent && nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE && cells[nx][ny].getColor() == color) {
             return true;
         }
     }
     return false;
+}
+
+vector<Cell*> Board::getValidMoves(Color color) {
+    vector<Cell*> validMoves;
+    for (int x = 0; x < BOARD_SIZE; ++x) {
+        for (int y = 0; y < BOARD_SIZE; ++y) {
+            if (isValidMove(x, y, color)) {
+                validMoves.push_back(new Cell(x, y));
+            }
+        }
+    }
+    return validMoves;
 }
 
 bool Board::isGameOver() {

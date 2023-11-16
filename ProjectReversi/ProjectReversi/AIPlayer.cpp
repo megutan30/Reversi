@@ -2,6 +2,7 @@
 #include "Board.h"
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 using namespace std;
 
@@ -10,8 +11,11 @@ AIPlayer::AIPlayer(Color color) : Player(color) {
 }
 
 Cell* AIPlayer::getNextMove(Board* board) {
-    // ランダムに石を打つ位置を選択する
-    int x = rand() % BOARD_SIZE;
-    int y = rand() % BOARD_SIZE;
-    return new Cell(x,y);
+    vector<Cell*> validMoves = board->getValidMoves(color);
+    if (validMoves.empty()) {
+        return nullptr;  // 有効な手がない場合
+    }
+    int index = rand() % validMoves.size();
+    return validMoves[index];
 }
+

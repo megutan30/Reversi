@@ -11,6 +11,9 @@ Game::Game(Player* player1, Player* player2) {
 
 void Game::play() {
 	while (true) {
+		/*ToDo*/
+		//パスの処理
+
 		// 盤面を表示
 		board.display();
 
@@ -25,7 +28,8 @@ void Game::play() {
 		else {
 			cout << "Invalid move. Try again." << endl;
 			cin.clear();  // エラー状態をクリア
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');  // 入力バッファをクリア
+			fseek(stdin, 0, SEEK_END);
+			//cin.ignore(numeric_limits<streamsize>::max(), '\n');  // 入力バッファをクリア
 			continue;
 		}
 
