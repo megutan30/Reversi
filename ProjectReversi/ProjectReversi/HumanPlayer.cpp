@@ -1,66 +1,81 @@
 #include "HumanPlayer.h"
+#include "Console.h"
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
 
+#define KEY_W 119
+#define KEY_A 97
+#define KEY_S 115
+#define KEY_D 100
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+#define KEY_ENTER 13
+
 using namespace std;
 
+/*コンストラクタ*/
 HumanPlayer::HumanPlayer(Color color) : Player(color) {
 }
 
-void HumanPlayer::moveCursor(int x, int y, COORD coord) {
-    coord.X += x * 2 ;
-    coord.Y += y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-
+/*十字キー取得*/
 int HumanPlayer::getArrowKey() {
     int ch = _getch();
-    if (ch == 0 || ch == 224) {
+    if (ch == 0 || ch == 127) {
         ch = _getch();
     }
     return ch;
 }
 
+/*カーソルをボードの範囲内に変換*/
 void HumanPlayer::convertCursorIntoBoardSize(int& x){
+    //ボードの大きさを超えるとき剰余を算出
     if (x >= 0) {
         x %= BOARD_SIZE;
         return;
     }
-    x = BOARD_SIZE - abs(x);
+    //マイナスになった際は最大値からマイナスの絶対値を産出
+    x = BOARD_SIZE - abs(x); 
 }
 
+/*プレイヤーのムーブ*/
 Cell* HumanPlayer::getNextMove(Board* board) {
-    COORD coord;
-    //カーソルの初期位置
-    coord.X = 3;
-    coord.Y = 1;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-
     int x = 0;
     int y = 0;
+
+    //初期カーソル配置
+    //前のカーソル配置をそのままにした方がやりやすいかも
+    console.moveCursor(console.initX,console.initY);
     while (true) {
         switch (getArrowKey()) {
-
-        case 72: // 上矢印キー
+        //上方向
+        case KEY_UP:
+        case KEY_W:
             --y;
             break;
-        case 80: // 下矢印キー
+        //下方向
+        case KEY_DOWN:
+        case KEY_S:
             ++y;
             break;
-        case 75: // 左矢印キー
+        //左方向
+        case KEY_LEFT:
+        case KEY_A:
             --x;
             break;
-        case 77: // 右矢印キー
+        //右方向
+        case KEY_RIGHT:
+        case KEY_D:
             ++x;
             break;
-        case 13: // エンターキー
+        //決定
+        case KEY_ENTER: // エンターキー
             return new Cell(x, y);
         }
         convertCursorIntoBoardSize(x);
         convertCursorIntoBoardSize(y);
-        moveCursor(x, y,coord);
+        console.moveCursor(x * 2 + console.initX, y + console.initY);//横幅は棒線をはさむのでニマス分動かす
     }
 }
-/*TODO*/
-//カーソルの位置

@@ -12,4 +12,4 @@ public:
     Cell* getNextMove(Board* board) override;
 };
 
-#endif /* AIPLAYER_H */
+#endif

@@ -16,7 +16,6 @@ public:
     std::vector<Cell*> getValidMoves(Color color);
     bool isGameOver();
     int countPieces(Color color);
-    
 private:
     Cell cells[BOARD_SIZE][BOARD_SIZE];
     const int dx[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -24,4 +23,4 @@ private:
     const int DIRNUM = 8;
 };
 
-#endif /* BOARD_H */
+#endif

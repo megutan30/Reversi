@@ -7,4 +7,4 @@ enum class Color {
     BLACK
 };
 
-#endif /* COLOR_H */
+#endif

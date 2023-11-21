@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "Board.h"
+#include "Console.h"
 
 class Game {
 public:
@@ -13,6 +14,8 @@ private:
     Player* player2;
     Board board;
     Player* currentPlayer;
+    Console console;
+    void switchPlayer();
 };
 
-#endif /* GAME_H */
+#endif

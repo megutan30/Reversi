@@ -4,8 +4,6 @@
 #include "Cell.h"
 #include "Board.h"
 
-//class Board;
-
 class Player {
 public:
     Player(Color color);
@@ -16,4 +14,4 @@ protected:
     Color color;
 };
 
-#endif /* PLAYER_H */
+#endif

@@ -3,16 +3,17 @@
 
 #include "Player.h"
 #include "Board.h"
+#include "Console.h"
 #include <windows.h>
 #include <conio.h>
-
 class HumanPlayer : public Player {
 public:
     HumanPlayer(Color color);
     Cell* getNextMove(Board* board) override;
-    void moveCursor(int x, int y,COORD coord);
+private:
     void convertCursorIntoBoardSize(int& x);
     int getArrowKey();
+    Console console;
 };
 
-#endif /* HUMAN_PLAYER_H */
+#endif
