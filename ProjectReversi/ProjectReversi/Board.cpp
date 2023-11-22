@@ -142,7 +142,7 @@ vector<Cell*> Board::getValidMoves(Color color) {
 	return validMoves;
 }
 
-/* ゲームが終了したかどうかを判定する*/
+/*ゲームが終了したかどうかを判定する*/
 bool Board::isGameOver() {
 	return getValidMoves(Color::BLACK).empty() && getValidMoves(Color::WHITE).empty();
 }

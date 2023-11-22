@@ -8,7 +8,7 @@ using namespace std;
 
 /*コンストラクタ*/
 AIPlayer::AIPlayer(Color color) : Player(color) {
-    srand(time(0));  // 乱数生成器の初期化
+    srand(time(0));  //乱数生成器の初期化
 }
 
 /*AIムーブ*/

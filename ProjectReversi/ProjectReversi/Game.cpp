@@ -1,87 +1,91 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include <iostream>
 #include <Windows.h>
 
 using namespace std;
 
-/*�R���X�g���N�^*/
+/*コンストラクタ*/
 Game::Game(Player* player1, Player* player2) {
 	this->player1 = player1;
 	this->player2 = player2;
 	this->currentPlayer = player1;
 }
 
-/*�Q�[�����[�v*/
+/*ゲームループ*/
 void Game::play() {
 	while (true) {
-		//�p�X�̏���
+		//パスの処理
 		if (board.getValidMoves(currentPlayer->getColor()).empty()){
-			//�^�[����؂�ւ���
+			//ターンを切り替える
+			cout << "パス...だと(　ﾟДﾟ)" << endl;
+			system("cls");
 			switchPlayer();
 		}
-		//�Ֆʂ�\��
+		//盤面を表示
 		board.display();
 
-		//���݂̃v���C���[���΂�ł�
+		//現在のプレイヤーが石を打つ
 		Cell* nextMove = currentPlayer->getNextMove(&board);
 		
 		/*BUG*/
-		//console.csbi.dwSize.Y��Console�̍s�����擾�ł���̂����A
-		//SetConsoleCursorPosition�֐����N���A�����̂��ɕ`�悷�邽�߂��܂������Ȃ�
-		//Windows�̎d�l�̂��߂��̕��@�͓����
-		//�o�b�t�@���g�p���ăR���\�[�������擾����Ƃ���͂���ňÓ]���Ă��܂��̂�
-		//��ʍX�V����x�ɂ܂Ƃ߂čs���悤�Ȍ`���悳����
+		//console.csbi.dwSize.YでConsoleの行数を取得できるのだが、
+		//SetConsoleCursorPosition関数がクリアしたのちに描画するためうまくいかない
+		//Windowsの仕様のためこの方法は難しそう
+		//バッファを使用してコンソール情報を取得するとそれはそれで暗転してしまうので
+		//画面更新を一度にまとめて行うような形がよさそう
 
-		//�ł������\��
-		console.moveCursor(0, console.csbi.dwSize.Y + 10);//�Ֆʂ̕`��ɍ��킹�Ă��̕��J�[�\����������
-		cout << nextMove->getX() << "," << nextMove->getY() << endl;
+		//打った手を表示
+		console.moveCursor(0, console.csbi.dwSize.Y + 10);//盤面の描画に合わせてその分カーソルを下げる
+		if(currentPlayer == player1)cout << nextMove->getX() << "," << nextMove->getY() << endl;
+		if(currentPlayer == player2)cout << nextMove->getX() << "," << nextMove->getY()<<"に置くぜ♪L( ＾ω＾ )┘└( ＾ω＾ )」♪" << endl;
 
-		//�u���邩�ǂ������`�F�b�N
+		//置けるかどうかをチェック
 		if (board.isValidMove(nextMove->getX(), nextMove->getY(), currentPlayer->getColor())) {
-			//�u�����ꏊ�𔽉f
+			//置いた場所を反映
 			board.placePiece(nextMove->getX(), nextMove->getY(), currentPlayer->getColor());
 			board.flipPieces(nextMove->getX(), nextMove->getY(), currentPlayer->getColor());
 		}
 		else {
-			cout << "Invalid move. Try again." << endl;
-			cin.clear();  // �G���[��Ԃ��N���A
-			fseek(stdin, 0, SEEK_END);// ���̓o�b�t�@���N���A
+			cout << "置けないよm9(^Д^)ﾌﾟｷﾞｬｰもう一度起くといいよ( ´,_ゝ｀)ﾌﾟｯ" << endl;
+			cin.clear();  // エラー状態をクリア
+			fseek(stdin, 0, SEEK_END);// 入力バッファをクリア
 			Sleep(1000);
 			system("cls");
 			continue;
 		}
 
-		//�Q�[���I������
+		//ゲーム終了判定
 		if (board.isGameOver()) {
 			break;
 		}
 
-		//�^�[����؂�ւ���
+		//ターンを切り替える
 		switchPlayer();
 
 		/*ToDo*/
-		//���̕ӂ̏����͌�X�v�ύX
-		//�肪������悤�ɏ������Ԃ�u��
+		//この辺の処理は後々要変更
+		//手が見えるように少し時間を置く
 		Sleep(1000);
 		system("cls");
 	}
-
-	//�Q�[���I�����Ɍ��ʂ�\��
+	system("cls");
+	board.display();
+	//ゲーム終了時に結果を表示
 	int player1Score = board.countPieces(player1->getColor());
 	int player2Score = board.countPieces(player2->getColor());
 	cout << "Player 1 score: " << player1Score << ", Player 2 score: " << player2Score << endl;
 	if (player1Score > player2Score) {
-		cout << "Player 1 wins!" << endl;
+		cout << "お前の勝ちだ(　ﾟдﾟ)､ﾍﾟｯ" << endl;
 	}
 	else if (player1Score < player2Score) {
-		cout << "Player 2 wins!" << endl;
+		cout << "雑魚乙w^^" << endl;
 	}
 	else {
-		cout << "It's a draw!" << endl;
+		cout << "いやぁむずかったわぁ。引き分けにすんのｗ" << endl;
 	}
 }
 
-/*���݂̃v���C���[�ύX*/
+/*現在のプレイヤー変更*/
 void Game::switchPlayer() {
 	currentPlayer = (currentPlayer == player1) ? player2 : player1;
 }
