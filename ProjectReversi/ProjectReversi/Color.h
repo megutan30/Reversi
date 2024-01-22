@@ -2,9 +2,9 @@
 #define COLOR_H
 
 enum class Color {
-    EMPTY,
     WHITE,
-    BLACK
+    BLACK,
+    EMPTY,
 };
 
 #endif

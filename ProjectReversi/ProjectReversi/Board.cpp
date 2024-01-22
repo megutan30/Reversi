@@ -77,6 +77,7 @@ void Board::placePiece(int x, int y, Color color) {
 void Board::flipPieces(int x, int y, Color color) {
 	//相手の色を取得
 	Color opponent = (color == Color::WHITE) ? Color::BLACK : Color::WHITE;
+
 	//各方向チェック
 	for (int i = 0; i < DIRNUM; ++i) {
 		int nx = x + dx[i], ny = y + dy[i];

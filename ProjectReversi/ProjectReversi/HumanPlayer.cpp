@@ -71,7 +71,7 @@ Cell* HumanPlayer::getNextMove(Board* board) {
             ++x;
             break;
         //決定
-        case KEY_ENTER: // エンターキー
+        case KEY_ENTER: //エンターキー
             return new Cell(x, y);
         }
         convertCursorIntoBoardSize(x);
