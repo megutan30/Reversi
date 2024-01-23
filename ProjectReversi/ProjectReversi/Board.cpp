@@ -66,6 +66,7 @@ void Board::display() {
 		cout << " " << x % BOARD_SIZE;
 	}
 	cout << endl;
+	cout << "---Tab:Log---";
 }
 
 /*ƒZƒ‹‚ÉÎ‚ð”z’u‚·‚é*/

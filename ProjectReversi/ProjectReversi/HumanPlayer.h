@@ -10,10 +10,15 @@ class HumanPlayer : public Player {
 public:
     HumanPlayer(Color color);
     Cell* getNextMove(Board* board) override;
+
 private:
     void convertCursorIntoBoardSize(int& x);
+    void toggleLog();
+    bool isLogEnabled()const;
     int getArrowKey();
     Console console;
+    bool logEnabled;
+
 };
 
 #endif

@@ -23,7 +23,6 @@ void Game::play() {
 		}
 		//盤面を表示
 		board.display();
-
 		//現在のプレイヤーが石を打つ
 		Cell* nextMove = currentPlayer->getNextMove(&board);
 		
@@ -35,9 +34,13 @@ void Game::play() {
 		//画面更新を一度にまとめて行うような形がよさそう
 
 		//打った手を表示
-		console.moveCursor(0, console.csbi.dwSize.Y + 10);//盤面の描画に合わせてその分カーソルを下げる
+		console.moveCursor((console.csbi.dwSize.X+ BOARD_SIZE + 2) * 2, console.csbi.dwSize.Y + 2);//盤面の描画に合わせてその分カーソルを下げる
 		if(currentPlayer == player1)cout << nextMove->getX() << "," << nextMove->getY() << endl;
 		if(currentPlayer == player2)cout << nextMove->getX() << "," << nextMove->getY()<<"に置くぜ♪L( ＾ω＾ )┘└( ＾ω＾ )」♪" << endl;
+
+		//打った手をログに追加
+		string action = currentPlayer->getColorString() + " plays at (" + std::to_string(nextMove->getX()) + ", " + std::to_string(nextMove->getY()) + ")";
+		gameLog.addLog(action);
 
 		//置けるかどうかをチェック
 		if (board.isValidMove(nextMove->getX(), nextMove->getY(), currentPlayer->getColor())) {
@@ -47,8 +50,8 @@ void Game::play() {
 		}
 		else {
 			cout << "置けないよm9(^Д^)ﾌﾟｷﾞｬｰもう一度起くといいよ( ´,_ゝ｀)ﾌﾟｯ" << endl;
-			cin.clear();  // エラー状態をクリア
-			fseek(stdin, 0, SEEK_END);// 入力バッファをクリア
+			cin.clear();  //エラー状態をクリア
+			fseek(stdin, 0, SEEK_END);//入力バッファをクリア
 			Sleep(1000);
 			system("cls");
 			continue;
@@ -62,9 +65,6 @@ void Game::play() {
 		//ターンを切り替える
 		switchPlayer();
 
-		/*ToDo*/
-		//この辺の処理は後々要変更
-		//手が見えるように少し時間を置く
 		Sleep(1000);
 		system("cls");
 	}

@@ -1,5 +1,5 @@
 #include "HumanPlayer.h"
-#include "Console.h"
+#include "GameLog.h"
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
@@ -13,11 +13,13 @@
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 #define KEY_ENTER 13
+#define KEY_TAB 9
 
 using namespace std;
 
 /*コンストラクタ*/
 HumanPlayer::HumanPlayer(Color color) : Player(color) {
+    logEnabled = false;
 }
 
 /*十字キー取得*/
@@ -38,6 +40,16 @@ void HumanPlayer::convertCursorIntoBoardSize(int& x){
     }
     //マイナスになった際は最大値からマイナスの絶対値を産出
     x = BOARD_SIZE - abs(x); 
+}
+
+/*ログ表示フラグの取得*/
+bool HumanPlayer::isLogEnabled() const {
+    return logEnabled;
+}
+
+/*ログ表示フラグの切り替え*/
+void HumanPlayer::toggleLog() {
+    logEnabled = !logEnabled;
 }
 
 /*プレイヤーのムーブ*/
@@ -71,9 +83,22 @@ Cell* HumanPlayer::getNextMove(Board* board) {
             ++x;
             break;
         //決定
-        case KEY_ENTER: //エンターキー
+        case KEY_ENTER:
             return new Cell(x, y);
+        //ログ
+        case KEY_TAB:
+            toggleLog();
+            if (isLogEnabled()) {
+                console.moveCursor(0, BOARD_SIZE + 3);//盤面分ずらす
+                GameLog::displayLog();
+            }
+            else
+            {
+                system("cls");
+                board->display();
+            }
         }
+        
         convertCursorIntoBoardSize(x);
         convertCursorIntoBoardSize(y);
         console.moveCursor(x * 2 + console.initX, y + console.initY);//横幅は棒線をはさむのでニマス分動かす

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Board.h"
 #include "Console.h"
+#include "GameLog.h"
 
 class Game {
 public:
@@ -15,6 +16,7 @@ private:
     Board board;
     Player* currentPlayer;
     Console console;
+    GameLog gameLog;
     void switchPlayer();
 };
 
