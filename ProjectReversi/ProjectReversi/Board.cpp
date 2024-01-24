@@ -22,8 +22,8 @@ Board::Board() {
 }
 
 /*”Õ–Ê•\Ž¦*/
-void Board::display() {
-	vector<Cell*> validMoves = getValidMoves(Color::WHITE);
+void Board::display(Color color) {
+	vector<Cell*> validMoves = getValidMoves(color);
 	cout << "  ";
 	for (int x = 0; x < BOARD_SIZE; ++x) {
 		cout << " " << x % BOARD_SIZE;

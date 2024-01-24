@@ -1,19 +1,17 @@
-#include "AIPlayer.h"
-#include "HumanPlayer.h"
 #include "Game.h"
+#include"HumanPlayer.h"
+#include"AIPlayer.h"
 
-int main() {
-    //人間プレイヤーとAIプレイヤーを作成
-    HumanPlayer* humanPlayer = new HumanPlayer(Color::WHITE);  // 人間プレイヤーは白
-    AIPlayer* aiPlayer = new AIPlayer(Color::BLACK);  // AIプレイヤーは黒
+using namespace std;
 
-    //ゲームを開始
-    Game game(humanPlayer, aiPlayer);
-    game.play();
+int main()
+{
+	HumanPlayer* Player1 = new HumanPlayer(Color::WHITE);
+	HumanPlayer* Player2 = new HumanPlayer(Color::BLACK);
+	
+	Game game(Player1, Player2);
+	game.play();
 
-    //プレイヤーオブジェクトを破棄
-    delete humanPlayer;
-    delete aiPlayer;
-
-    return 0;
+	delete Player1;
+	delete Player2;
 }

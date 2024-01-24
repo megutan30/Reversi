@@ -9,7 +9,7 @@ const int BOARD_SIZE = 8;
 class Board {
 public:
     Board();
-    void display();
+    void display(Color color);
     void placePiece(int x, int y, Color color);
     void flipPieces(int x, int y, Color color);
     bool isValidMove(int x, int y, Color color);

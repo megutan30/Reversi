@@ -95,7 +95,7 @@ Cell* HumanPlayer::getNextMove(Board* board) {
             else
             {
                 system("cls");
-                board->display();
+                board->display(color);
             }
         }
         

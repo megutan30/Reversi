@@ -5,7 +5,7 @@
 #include "Board.h"
 #include "Console.h"
 #include "GameLog.h"
-
+#include "Server.h"
 class Game {
 public:
     Game(Player* player1, Player* player2);
